@@ -1326,6 +1326,9 @@ components:
           eventName:
               type: string
               example: "COURSE"
+          eventDescription:
+              type: string
+              example: "PROG2 Course"
           startTime:
               type: string
               format: date-time
@@ -1346,8 +1349,10 @@ components:
           type: string
         name:
           type: string
-        idEventToAttend:
-          type: string
+        eventToAttend:
+          type: array
+          allOf:
+            - $ref: "#/components/schemas/Event"
 
     EventParticipant:
         allOf:
