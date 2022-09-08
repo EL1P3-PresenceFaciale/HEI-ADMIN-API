@@ -835,6 +835,226 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
+
+  /places:
+    get:
+      tags:
+        - Place
+      summary: Get all places
+      operationId: getPlaces
+      responses:
+        '200':
+          description: List of places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Place'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+        - Place
+      summary: Create new places or update existing groups
+      description: Update places when `id` are provided, create them otherwise.
+      operationId: createOrUpdatePlaces
+      requestBody:
+        description: Places to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Place'
+      responses:
+        '200':
+          description: The created or updated places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Place'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /places/{id}:
+    get:
+      tags:
+        - Place
+      summary: Get place by identifier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: getPlacesById
+      responses:
+        '200':
+          description: The identified places
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+  /events:
+      get:
+          tags:
+            - Events
+          summary: Get All Events
+          operationId: getAllEvents
+          responses:
+            '200':
+                description: List of all events
+                content:
+                  application/json:
+                      schema:
+                          $ref: "#/components/schemas/Event"
+            '400':
+              $ref: '#/components/responses/400'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '429':
+              $ref: '#/components/responses/429'
+            '500':
+              $ref: '#/components/responses/500'
+
+      put:
+          tags:
+            - Events
+          summary: Create or update an event
+          operationId: createOrUpdateEvent
+          requestBody:
+            description: event to be create or updated
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                      $ref: "#/components/schemas/Event"
+          responses:
+            '200':
+                description: event created or updated
+                content:
+                  application/json:
+                      schema:
+                        $ref: "#/components/schemas/Event"
+
+            '400':
+              $ref: '#/components/responses/400'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '429':
+              $ref: '#/components/responses/429'
+            '500':
+              $ref: '#/components/responses/500'
+
+  /events/{id_event}/eventParticipant:
+      get:
+          tags:
+            - EventParticipant
+          summary: get All participant to one event
+          operationId: getAllParticipantToOneEvent
+          parameters:
+            - name: page
+              in: query
+              schema:
+                $ref: '#/components/schemas/Page'
+            - name: pageSize
+              in: query
+              schema:
+                $ref: '#/components/schemas/PageSize'
+            - name: id_event
+              in: path
+              required: true
+              schema:
+                  type: string
+          responses:
+            '200':
+                description: list of eventParticipant to an event
+                content:
+                  application/json:
+                      schema:
+                        $ref: "#/components/schemas/EventParticipant"
+
+            '400':
+              $ref: '#/components/responses/400'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '429':
+              $ref: '#/components/responses/429'
+            '500':
+              $ref: '#/components/responses/500'
+
+  /eventParticipant:
+    post:
+      tags:
+        - EventParticipant
+      summary: Create an event participant
+      operationId: createAnEventParticipant
+      requestBody:
+        description: event participant to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CreateEventParticipant"
+
+      responses:
+        '200':
+          description: event participant created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventParticipant"
+
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
 components:
   securitySchemes:
     BearerAuth:
@@ -872,6 +1092,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InternalServerException'
+
   schemas:
     Whoami:
       properties:
@@ -1048,7 +1269,6 @@ components:
     PageSize:
       type: integer
       description: Cannot exceed `500`
-
     Exception:
       type: object
       properties:
@@ -1086,3 +1306,59 @@ components:
       example:
         type: InternalServerException
         message: Unexpected error
+
+    Place:
+      type: object
+      properties:
+        id:
+          type: string
+        placeName:
+          type: string
+          example: "HEI Ivandry"
+        city:
+          type: string
+
+    Event:
+        type: object
+        properties:
+          id:
+              type: string
+          eventName:
+              type: string
+              example: "COURSE"
+          startTime:
+              type: string
+              format: date-time
+              example: "2013-05-30T23:38:23.085Z"
+          endingTime:
+              type: string
+              format: date-time
+              example: "2013-05-30T23:38:23.085Z"
+          idPlace:
+              type: string
+
+    CreateEventParticipant:
+      type: object
+      properties:
+        idEventParticipant:
+          type: string
+        ref:
+          type: string
+        name:
+          type: string
+        idEventToAttend:
+          type: string
+
+    EventParticipant:
+        allOf:
+          - $ref: "#/components/schemas/CreateEventParticipant"
+        type: object
+        properties:
+          status:
+              type: string
+              enum:
+                - "MISSING"
+                - "PRESENT"
+                - "EXPECTED"
+              default: "EXPECTED"
+
