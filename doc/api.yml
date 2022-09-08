@@ -1319,26 +1319,40 @@ components:
           type: string
 
     Event:
+        allOf:
+          - $ref: '#/components/schemas/CreateEvent'
         type: object
         properties:
           id:
               type: string
-          eventName:
-              type: string
-              example: "COURSE"
-          eventDescription:
-              type: string
-              example: "PROG2 Course"
-          startTime:
-              type: string
-              format: date-time
-              example: "2013-05-30T23:38:23.085Z"
-          endingTime:
-              type: string
-              format: date-time
-              example: "2013-05-30T23:38:23.085Z"
-          idPlace:
-              type: string
+          status:
+            type: string
+            enum:
+              - "MISSING"
+              - "PRESENT"
+              - "EXPECTED"
+            default: "EXPECTED"
+
+    CreateEvent:
+      type: object
+      properties:
+        eventName:
+          type: string
+          example: "COURSE"
+        eventDescription:
+          type: string
+          example: "PROG2 Course"
+        startTime:
+          type: string
+          format: date-time
+          example: "2013-05-30T23:38:23.085Z"
+        endingTime:
+          type: string
+          format: date-time
+          example: "2013-05-30T23:38:23.085Z"
+        place:
+          type: string
+
 
     CreateEventParticipant:
       type: object
@@ -1354,16 +1368,5 @@ components:
           allOf:
             - $ref: "#/components/schemas/Event"
 
-    EventParticipant:
-        allOf:
-          - $ref: "#/components/schemas/CreateEventParticipant"
-        type: object
-        properties:
-          status:
-              type: string
-              enum:
-                - "MISSING"
-                - "PRESENT"
-                - "EXPECTED"
-              default: "EXPECTED"
+
 
