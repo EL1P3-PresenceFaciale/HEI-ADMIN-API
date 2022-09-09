@@ -931,7 +931,7 @@ paths:
     get:
       tags:
         - Events
-      summary: Get place by identifier
+      summary: Get event by identifier
       parameters:
         - name: id_event
           in: path
