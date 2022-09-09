@@ -1357,6 +1357,24 @@ components:
         eventResponsible:
           $ref: "#/components/schemas/User"
 
+    EventParticipant:
+        type: object
+        properties:
+          idEventParticipant:
+              type: string
+          ref:
+              type: string
+          eventParticipant:
+              $ref: "#/components/schemas/User"
+          eventToAttend:
+              $ref: "#/components/schemas/Event"
+          status:
+              type: string
+              enum:
+                - "MISSING"
+                - "PRESENT"
+                - "EXPECTED"
+              default: "EXPECTED"
 
 #    CreateEventParticipant:
 #      type: object
