@@ -930,7 +930,7 @@ paths:
   /events/{id_event}:
     get:
       tags:
-        - Events
+        - Place
       summary: Get event by identifier
       parameters:
         - name: id_event
@@ -961,7 +961,7 @@ paths:
   /events:
       get:
           tags:
-            - Events
+            - Place
           summary: Get All Events
           operationId: getAllEvents
           responses:
@@ -984,7 +984,7 @@ paths:
 
       put:
           tags:
-            - Events
+            - Place
           summary: Create or update an event
           operationId: createOrUpdateEvent
           requestBody:
@@ -1018,7 +1018,7 @@ paths:
   /events/{id_event}/eventParticipant:
       get:
           tags:
-            - EventParticipant
+            - Place
           summary: get All participant to one event
           operationId: getAllParticipantToOneEvent
           parameters:
@@ -1057,7 +1057,7 @@ paths:
   /eventParticipant:
     post:
       tags:
-        - EventParticipant
+        - Place
       summary: Create an event participant
       operationId: createAnEventParticipant
       requestBody:
