@@ -22,10 +22,7 @@ public class PlaceService {
     }
 
     public Place createOrUpdatePlaces(Place place){
-        Place placeToPut = placeRepository.findById(place.getId()).get() ;
-        placeToPut.setPlaceName(place.getPlaceName());
-        placeToPut.setCity(place.getCity());
-        return placeRepository.save(placeToPut) ;
+        return placeRepository.save(place) ;
     }
 
     public Place getPlacesById(String id){

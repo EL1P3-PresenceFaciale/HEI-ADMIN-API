@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import school.hei.haapi.SentryConf;
-import school.hei.haapi.endpoint.rest.api.PlaceApi;
+import school.hei.haapi.endpoint.rest.api.PlacesApi;
 import school.hei.haapi.endpoint.rest.api.TeachingApi;
 import school.hei.haapi.endpoint.rest.client.ApiClient;
 import school.hei.haapi.endpoint.rest.client.ApiException;
@@ -48,14 +48,14 @@ class PlaceIT {
   static Place place1(){
     return new Place()
             .id("place1_id")
-            .placeName("Andavamamba")
+            .location("Andavamamba")
             .city("Antananrivo") ;
   }
 
   static Place place2(){
     return new Place()
             .id("place2_id")
-            .placeName("Ivandry")
+            .location("Ivandry")
             .city("Antananarivo") ;
   }
 
@@ -71,7 +71,7 @@ class PlaceIT {
   @Test
   void student_read_ko() throws ApiException{
     ApiClient student1Client = anApiClient(STUDENT1_TOKEN);
-    PlaceApi api = new PlaceApi(student1Client) ;
+    PlacesApi api = new PlacesApi(student1Client) ;
    assertThrowsForbiddenException(api::getPlaces);
   }
 
@@ -79,14 +79,14 @@ class PlaceIT {
   @Test
   void teacher_read_ko() throws ApiException{
     ApiClient teacher1Client = anApiClient(TEACHER1_TOKEN);
-    PlaceApi api = new PlaceApi(teacher1Client) ;
+    PlacesApi api = new PlacesApi(teacher1Client) ;
     assertThrowsForbiddenException(api::getPlaces);
   }
 
   @Test
   void manager_read_ok() throws ApiException{
     ApiClient manager1Client = anApiClient(MANAGER1_TOKEN);
-    PlaceApi api = new PlaceApi(manager1Client) ;
+    PlacesApi api = new PlacesApi(manager1Client) ;
 
     List<Place> places = api.getPlaces() ;
 

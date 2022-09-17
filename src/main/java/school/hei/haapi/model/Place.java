@@ -43,7 +43,7 @@ public class Place {
     @GeneratedValue(strategy = IDENTITY)
     private String id;
 
-    private String placeName ;
+    private String location ;
 
     private String city ;
 }

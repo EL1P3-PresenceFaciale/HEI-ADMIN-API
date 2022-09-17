@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,8 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id ;
+    @Column(name = "id_event")
+    private String idEvent ;
 
     @Column(name = "event_name")
     private String eventName ;

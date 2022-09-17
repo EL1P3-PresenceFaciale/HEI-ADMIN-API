@@ -10,13 +10,13 @@ public class PlaceMapper {
         return new Place()
                 .id(domain.getId())
                 .city(domain.getCity())
-                .placeName(domain.getPlaceName());
+                .location(domain.getLocation());
     }
 
     public school.hei.haapi.model.Place toDomain(Place rest){
         return school.hei.haapi.model.Place.builder()
                 .id(rest.getId())
-                .placeName(rest.getPlaceName())
+                .location(rest.getLocation())
                 .city(rest.getCity())
                 .build() ;
     }

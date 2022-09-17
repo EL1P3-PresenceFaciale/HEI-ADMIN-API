@@ -13,8 +13,10 @@ import school.hei.haapi.endpoint.event.model.gen.UserUpserted;
 import school.hei.haapi.model.BoundedPageSize;
 import school.hei.haapi.model.PageFromOne;
 import school.hei.haapi.model.User;
+import school.hei.haapi.model.exception.BadRequestException;
 import school.hei.haapi.model.validator.UserValidator;
 import school.hei.haapi.repository.UserRepository;
+import school.hei.haapi.service.AWS.RekognitionService;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -23,9 +25,12 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 @AllArgsConstructor
 public class UserService {
 
+
   private final UserRepository userRepository;
+  private final RekognitionService rekognitionService;
   private final EventProducer eventProducer;
   private final UserValidator userValidator;
+
 
   public User getById(String userId) {
     return userRepository.getById(userId);
@@ -66,5 +71,23 @@ public class UserService {
     return userRepository
         .findByRoleAndRefContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(
            role, ref, firstName, lastName, pageable);
+  }
+
+  public List<User> getByGroup(PageFromOne page, BoundedPageSize pageSize, User.Role role,
+                               String groupId) {
+    Pageable pageable =
+            PageRequest.of(page.getValue() - 1, pageSize.getValue(), Sort.by(ASC, "ref"));
+    return userRepository.findByRoleAndGroup_Id(role, groupId, pageable);
+  }
+
+  public User rekognisePicture(byte[] picture) {
+    List<User> users = userRepository.findAll();
+    for (User user : users) {
+      if (rekognitionService.compareFaces(picture, user.getPicture()).getFaceMatches().get(0)
+              .getSimilarity() >= RekognitionService.SIMILARITY_THRESHOLD) {
+        return user;
+      }
+    }
+    throw new BadRequestException("Given picture fits no user");
   }
 }

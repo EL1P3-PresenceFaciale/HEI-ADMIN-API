@@ -25,17 +25,12 @@ public class EventService {
         return eventRepository.findById(id).get() ;
     }
 
-    public Event createOrUpdateEvent(Event event){
-        Event eventToUpdate = eventRepository.getById(event.getId()) ;
-        if(eventRepository.existsById(event.getId())){
-        eventToUpdate.setEventDescription(event.getEventDescription());
-        eventToUpdate.setEventName(event.getEventName());
-        eventToUpdate.setEventResponsible(event.getEventResponsible());
-        eventToUpdate.setPlace(event.getPlace());
-        eventToUpdate.setStartTime(event.getStartTime());
-        eventToUpdate.setEndingTime(event.getEndingTime());
-            return eventRepository.save(eventToUpdate) ;
-        }
-        return eventRepository.save(event) ;
+    public List<Event> createOrUpdateEvent(List<Event> events){
+        return eventRepository.saveAll(events) ;
+    }
+
+    public String deleteById(String eventId) {
+        eventRepository.deleteById(eventId);
+        return "Deleted successfull";
     }
 }
