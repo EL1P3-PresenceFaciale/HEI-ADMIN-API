@@ -1093,18 +1093,6 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /events/{event_id}/participants/attendance:
-    post:
-      tags:
-        - Places
-      summary:
-      operationId: checkAttendance
-      requestBody:
-        content:
-          application/json:
-              schema:
-                type: array
-
 
 components:
   securitySchemes:

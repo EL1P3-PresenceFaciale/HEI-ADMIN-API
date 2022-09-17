@@ -24,7 +24,7 @@ public class EventParticipantMapper {
         return new EventParticipant()
                 .id(domain.getId())
                 .ref(domain.getUser().getId())
-                .eventId(domain.getEvent().getId())
+                .eventId(domain.getEvent().getIdEvent())
                 .status(EventParticipant.StatusEnum.fromValue(domain.getStatus().toString()));
     }
 

@@ -16,7 +16,8 @@ public class EventMapper {
 
     public Event toRest(school.hei.haapi.model.Event domain) {
         return new Event()
-                .idEvent(domain.getId())
+                .idEvent(domain.getIdEvent())
+                .eventDescription(domain.getEventDescription())
                 .responsible(domain.getEventResponsible().getId())
                 .eventName(domain.getEventName())
                 .place(domain.getPlace().getId())
@@ -24,16 +25,17 @@ public class EventMapper {
                 .endingTime(domain.getEndingTime());
     }
 
-    public school.hei.haapi.model.Event toDomain(Event restEvent) {
-        User responsible = userService.getById(restEvent.getResponsible());
-        Place place = placeService.getPlacesById(restEvent.getPlace());
+    public school.hei.haapi.model.Event toDomain(Event rest) {
+        User responsible = userService.getById(rest.getResponsible());
+        Place place = placeService.getPlacesById(rest.getPlace());
         return school.hei.haapi.model.Event.builder()
-                .id(restEvent.getIdEvent())
+                .idEvent(rest.getIdEvent())
+                .eventDescription(rest.getEventDescription())
                 .eventResponsible(responsible)
-                .eventName(restEvent.getEventName())
+                .eventName(rest.getEventName())
                 .place(place)
-                .startTime(restEvent.getStartTime())
-                .endingTime(restEvent.getEndingTime())
+                .startTime(rest.getStartTime())
+                .endingTime(rest.getEndingTime())
                 .build();
     }
 }

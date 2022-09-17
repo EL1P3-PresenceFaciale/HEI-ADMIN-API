@@ -47,7 +47,7 @@ public class EventParticipantIT {
 
     public static EventParticipant eventParticipant1() {
         return new EventParticipant()
-                .id("student1_id")
+                .id("participant1_id")
                 .ref("student1_id")
                 .eventId("event1_id")
                 .status(EventParticipant.StatusEnum.EXPECTED);
@@ -55,8 +55,8 @@ public class EventParticipantIT {
 
     public static EventParticipant eventParticipant2() {
         return new EventParticipant()
-                .id("student3_id")
-                .ref("student3_id")
+                .id("participant2_id")
+                .ref("student2_id")
                 .eventId("event1_id")
                 .status(EventParticipant.StatusEnum.EXPECTED);
     }
@@ -69,11 +69,10 @@ public class EventParticipantIT {
 
     public static EventParticipant createdParticipants() {
         return new EventParticipant()
-                .id("student2_id")
-                .ref("student2_id")
+                .id("participant1_id")
+                .ref("student1_id")
                 .eventId("event1_id")
-                .status(EventParticipant.StatusEnum.EXPECTED)
-                ;
+                .status(EventParticipant.StatusEnum.EXPECTED);
     }
 
     @BeforeEach
@@ -84,7 +83,6 @@ public class EventParticipantIT {
     @Test
     void badtoken_read_ko() {
         ApiClient anonymousClient = anApiClient(BAD_TOKEN);
-
         PlacesApi api = new PlacesApi(anonymousClient);
         assertThrowsForbiddenException(() -> api.getAllParticipantToOneEvent("event1_id", 1 , 100));
     }
@@ -103,11 +101,9 @@ public class EventParticipantIT {
         ApiClient student1Client = anApiClient(STUDENT1_TOKEN);
 
         PlacesApi api = new PlacesApi(student1Client);
-        // Event actual1 = api.getCourseById(COURSE1_ID);
         List<EventParticipant> actualParticipants =
-                api.getAllParticipantToOneEvent("event1_id", 1 , 100);
+                api.getAllParticipantToOneEvent("event1_id", 1 , 50);
 
-        //assertEquals(eventParticipant1(), actual1);
         assertTrue(actualParticipants.contains(eventParticipant1()));
         assertTrue(actualParticipants.contains(eventParticipant2()));
     }
@@ -135,11 +131,9 @@ public class EventParticipantIT {
         ApiClient student1Client = anApiClient(MANAGER1_TOKEN);
 
         PlacesApi api = new PlacesApi(student1Client);
-        //Course actual1 = api.getCourseById(COURSE1_ID);
         List<EventParticipant> actualParticipants =
-                api.getAllParticipantToOneEvent("event1_id", 1 , 100);
+                api.getAllParticipantToOneEvent("event1_id", 1 , 50);
 
-        //assertEquals(eventParticipant1(), actual1);
         assertTrue(actualParticipants.contains(eventParticipant1()));
         assertTrue(actualParticipants.contains(eventParticipant2()));
     }
@@ -161,7 +155,6 @@ public class EventParticipantIT {
 
     static class ContextInitializer extends AbstractContextInitializer {
         public static final int SERVER_PORT = anAvailableRandomPort();
-
         @Override
         public int getServerPort() {
             return SERVER_PORT;
